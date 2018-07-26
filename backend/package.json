@@ -9,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "botkit": "0.2.2",
+    "botkit-storage-mongo": "^1.0.2",
+    "mongodb": "^1.4.39"
   }
 }
