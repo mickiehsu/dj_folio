@@ -11,7 +11,32 @@ app.get('/', function (req, res) {
   res.send('hello world')
 })
 
-app.listen(5050, () => console.log('Example app listening on port 5000!'))
+app.get('/api/getSong', (req, res) => {
+  if (video_queue.length > 0) {
+    let playlist = video_queue.map(obj => {
+      var rObj = {};
+      rObj['title'] = obj.title;
+      rObj['url'] = 'https://www.youtube.com/watch?v=' + obj.id
+      return rObj;
+    });
+
+    console.log('PlayList: ', playlist);
+
+    currentSong = video_queue[0];
+
+    res.send({
+      title: currentSong.title,
+      YT_id: currentSong.id,
+      seconds: currentSecond,
+      video_queueLength: video_queue.length,
+      playlist: JSON.stringify(playlist)
+    });
+  } else {
+    res.send('No song left');
+  }
+});
+
+app.listen(5050, () => console.log('Example app listening on port 5050!'))
 
 
 var http = require("http");
