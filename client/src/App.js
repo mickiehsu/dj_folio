@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 const axios = require('axios');
-const API = 'https://localhost:5000/';
+const API = '/';
 
 class App extends Component {
   constructor (props) {

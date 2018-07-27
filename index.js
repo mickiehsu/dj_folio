@@ -36,7 +36,8 @@ app.get('/api/getSong', (req, res) => {
   }
 });
 
-app.listen(5050, () => console.log('Example app listening on port 5050!'))
+const port = process.env.PORT || 5000;
+app.listen(port, () => console.log('Example app listening on port' + port))
 
 
 var http = require("http");
