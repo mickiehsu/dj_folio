@@ -240,15 +240,18 @@ controller.hears(['.songs'], 'direct_message,direct_mention,mention', function (
   bot.reply(message, "http://djfolio-demo.herokuapp.com/");
 });
 
-controller.hears(['.addSong (.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
-  var keyword = message.match[1];
+controller.hears(['.addSong (.*)', '.addSong (.*) (.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
+  
+  const tmpKeywords = JSON.stringify(message.match[1]);
+  const keyword = tmpKeywords.split(' ').join('+');
+
   http.get('http://djfoliobackendbot.herokuapp.com/api/add-song?keyword=' + keyword, (res) => {
     res.on('data', (data) => {
       console.log(data);
     });
     
     res.on('end', function () {
-      bot.reply(message, 'Song added!');
+      bot.reply(message, 'Song with keywords: ' + keyword + 'added!');
     });
 
     res.on('error', function (e) {
@@ -262,6 +265,13 @@ controller.hears(['.hello', '.hi', '.greetings'], 'direct_message', function (bo
   bot.reply(message, "Hello!");
 });
 
+
+
+controller.hears(['tweet (.*)', 'tweet (.*) (.*)'], 'direct_message', function (bot, message) {
+  const keyword = JSON.stringify(message.match[1]);
+  const replaced = keyword.split(' ').join('+');
+  bot.reply(message, replaced);
+});
 
 /**
  * Weather api testing
