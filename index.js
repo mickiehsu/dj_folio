@@ -219,16 +219,15 @@ controller.on('bot_channel_join', function (bot, message) {
 
 
 controller.hears(['.songs'], 'direct_message,direct_mention,mention', function (bot, message) {
-  bot.reply(message, "http://localhost:3000/");
+  bot.reply(message, "http://djfolio-demo.herokuapp.com/");
 });
 
 controller.hears(['.addSong (.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
   var keyword = message.match[1];
   var options = {
     protocol: 'http:',
-    host: 'localhost',
+    host: 'djfoliobackendbot.herokuapp.com',
     path: '/api/add-song?keyword=' + keyword,
-    port: 5000,
     method: 'GET'
   }
 
