@@ -2,14 +2,16 @@ var express = require('express')
 var app = express()
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'client/build')));
+// if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+// }
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function (req, res) {
   res.send('hello world')
 })
 
-app.listen(5000, () => console.log('Example app listening on port 5000!'))
+app.listen(5050, () => console.log('Example app listening on port 5000!'))
 
 
 var http = require("http");
