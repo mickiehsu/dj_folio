@@ -224,29 +224,20 @@ controller.hears(['.songs'], 'direct_message,direct_mention,mention', function (
 
 controller.hears(['.addSong (.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
   var keyword = message.match[1];
-  var options = {
-    protocol: 'http:',
-    host: 'djfoliobackendbot.herokuapp.com',
-    path: '/api/add-song?keyword=' + keyword,
-    method: 'GET'
-  }
-
-  var request = http.request(options, function (response) {
-    response.on('data', function (data) {
-
+  http.get('http://djfoliobackendbot.herokuapp.com/api/add-song?keyword=' + keyword, (res) => {
+    res.on('data', (data) => {
+      console.log(data);
     });
-
-    response.on('end', function () {
+    
+    res.on('end', function () {
       bot.reply(message, 'Song added!');
     });
-  });
 
-  request.on('error', function (e) {
-    console.log('Problem request: ' + e.message);
-    bot.reply(message, "sorry, we met some problem.");
+    res.on('error', function (e) {
+      console.log('Problem request: ' + e.message);
+      bot.reply(message, "sorry, we met some problem.");
+    });
   });
-
-  request.end();
 });
 
 controller.hears(['.hello', '.hi', '.greetings'], 'direct_message', function (bot, message) {
