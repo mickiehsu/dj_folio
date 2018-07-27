@@ -240,7 +240,7 @@ controller.hears(['.songs'], 'direct_message,direct_mention,mention', function (
   bot.reply(message, "http://djfolio-demo.herokuapp.com/");
 });
 
-controller.hears(['.addSong (.*)', '.addSong (.*) (.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
+controller.hears(['.add (.*)', '.add (.*) (.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
   
   const tmpKeywords = JSON.stringify(message.match[1]);
   const keyword = tmpKeywords.split(' ').join('+');
