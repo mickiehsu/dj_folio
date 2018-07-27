@@ -213,14 +213,47 @@ controller.on('rtm_close', function (bot) {
  * Core bot logic goes here!
  */
 // BEGIN EDITING HERE!
-
 controller.on('bot_channel_join', function (bot, message) {
   bot.reply(message, "I'm here!")
 });
 
-controller.hears(['.hello', '.hi', '.greetings'], 'direct_message', function (bot, message) {
-  bot.reply(message, 'Hello!');
+
+controller.hears(['.songs'], 'direct_message,direct_mention,mention', function (bot, message) {
+  bot.reply(message, "http://localhost:3000/");
 });
+
+controller.hears(['.addSong (.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
+  var keyword = message.match[1];
+  var options = {
+    protocol: 'http:',
+    host: 'localhost',
+    path: '/api/add-song?keyword=' + keyword,
+    port: 5000,
+    method: 'GET'
+  }
+
+  var request = http.request(options, function (response) {
+    response.on('data', function (data) {
+
+    });
+
+    response.on('end', function () {
+      bot.reply(message, 'Song added!');
+    });
+  });
+
+  request.on('error', function (e) {
+    console.log('Problem request: ' + e.message);
+    bot.reply(message, "sorry, we met some problem.");
+  });
+
+  request.end();
+});
+
+controller.hears(['.hello', '.hi', '.greetings'], 'direct_message', function (bot, message) {
+  bot.reply(message, "Hello!");
+});
+
 
 /**
  * Weather api testing
