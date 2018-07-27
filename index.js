@@ -131,12 +131,16 @@ app.get('/api/add-song', (req, cli_res) => {
             video_queue.push({ id: videoId, title: videoTitle, duration: videoDuration });
             console.log(video_queue);
             console.log('Song pushed in queue successfully');
-            cli_res.send('Song added');
+            // cli_res.send({title: videoTitle});
+            cli_res.send({
+              title: videoTitle,
+              YT_id: videoId,
+            });
           }
         });
       }
       else
-        cli_res.send('Invlid query');
+        cli_res.send('Invalid query');
     });
 
   }).on('error', (e) => {
@@ -245,19 +249,14 @@ controller.hears(['.add (.*)', '.add (.*) (.*)'], 'direct_message,direct_mention
   const tmpKeywords = JSON.stringify(message.match[1]);
   const keyword = tmpKeywords.split(' ').join('+');
 
-  http.get('http://djfoliobackendbot.herokuapp.com/api/add-song?keyword=' + keyword, (res) => {
-    res.on('data', (data) => {
-      console.log(data);
-    });
-    
-    res.on('end', function () {
-      bot.reply(message, 'Song with keywords: ' + keyword + 'added!');
-    });
-
-    res.on('error', function (e) {
-      console.log('Problem request: ' + e.message);
+  request(`http://djfoliobackendbot.herokuapp.com/api/add-song?keyword=${keyword}`, function (error, response, body) {
+    if (!error && response.statusCode == 200 && body) {
+      
+      data = JSON.parse(body);
+      bot.reply(message, `\`Song added: ${data.title}\``);
+    } else {
       bot.reply(message, "sorry, we met some problem.");
-    });
+    }
   });
 });
 
